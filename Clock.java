@@ -1,4 +1,3 @@
-import java.util.Calendar;
 
 public class Clock {
     private int hours, minutes, seconds;
@@ -14,8 +13,8 @@ public class Clock {
     }
 
     public synchronized void chronometer() {
+        validateTime();
         while (true) {
-            validateTime();
             showTime();
             updateChronometerValues();
             waitaSecond();
