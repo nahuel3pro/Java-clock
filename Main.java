@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.time.LocalTime;
 
 public class Main {
     public static void main(String args[]) {
@@ -9,7 +10,7 @@ public class Main {
         do {
             do {
                 System.out.println("\n1. Timer ");
-                System.out.println("\n2. System Clock ");
+                System.out.println("\n2. Current Time ");
                 System.out.println("\n3. Chronometer ");
                 System.out.println("\n4. Exit");
                 option = scanner.nextInt();
@@ -17,23 +18,30 @@ public class Main {
 
             switch (option) {
                 case 1:
-                    System.out.println("Enter hours: ");
+                    System.out.print("Enter hours: ");
                     hours = scanner.nextInt();
-                    System.out.println("Enter minutes: ");
+                    System.out.print("Enter minutes: ");
                     minutes = scanner.nextInt();
-                    System.out.println("Enter seconds: ");
+                    System.out.print("Enter seconds: ");
                     seconds = scanner.nextInt();
 
                     Clock clock = new Clock(hours, minutes, seconds);
                     clock.timer();
                     break;
                 case 2:
-                    System.out.println("Sys clock ");
+                    LocalTime currentTime = LocalTime.now();
+
+                    // Extract hour, minute, and second from the current time
+                    int currentHour = currentTime.getHour();
+                    int currentMinute = currentTime.getMinute();
+                    int currentSecond = currentTime.getSecond();
+
+                    Clock clock2 = new Clock(currentHour, currentMinute, currentSecond);
+                    clock2.sysClock();
                     break;
                 case 3:
-                    System.out.println("Cronhometer ");
-                    Clock clock2 = new Clock();
-                    clock2.chronometer();
+                    Clock clock3 = new Clock();
+                    clock3.chronometer();
                     break;
             }
         } while (option != EXIT_OPTION);

@@ -1,5 +1,7 @@
+import java.util.Calendar;
+
 public class Clock {
-    int hours, minutes, seconds;
+    private int hours, minutes, seconds;
 
     Clock() {
         this.hours = 0;
@@ -8,7 +10,6 @@ public class Clock {
     };
 
     Clock(int hours, int minutes, int seconds) {
-        validateTime(hours, minutes, seconds);
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
@@ -16,6 +17,7 @@ public class Clock {
 
     public synchronized void chronometer() {
         while (true) {
+            validateTime();
             showTime();
             updateChronometerValues();
             waitaSecond();
@@ -31,6 +33,14 @@ public class Clock {
         }
     }
 
+    public synchronized void sysClock(){
+        while(true){
+            showTime();
+            waitaSecond();
+            updateChronometerValues();
+        }
+    }
+
     private void waitaSecond() {
         try {
             Thread.sleep(1000); // Wait for one second (1000 milliseconds)
@@ -40,18 +50,18 @@ public class Clock {
 
     private void updateChronometerValues() {
         this.seconds++;
-        if (this.seconds == 59) {
+        if (this.seconds == 60) {
             this.minutes++;
             this.seconds = 0;
         }
-        if (this.minutes == 59) {
+        if (this.minutes == 60 && this.seconds == 60) {
             this.hours++;
             this.minutes = 0;
         }
     }
 
-    private void validateTime(int hours, int minutes, int seconds) {
-        if (hours < 0 || minutes < 0 || seconds <= 0) {
+    private void validateTime() {
+        if (this.hours < 0 || this.minutes < 0 && this.seconds <= 0) {
             throw new IllegalArgumentException(
                     "Invalid time values. Hours, minutes, and seconds must be within valid ranges.");
         }
