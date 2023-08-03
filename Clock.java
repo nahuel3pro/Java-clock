@@ -4,9 +4,7 @@ public class Clock {
     private int hours, minutes, seconds;
 
     Clock() {
-        this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
+        this(0,0,0);
     };
 
     Clock(int hours, int minutes, int seconds) {
