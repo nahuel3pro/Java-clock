@@ -2,16 +2,26 @@
 public class Clock {
     private int hours, minutes, seconds;
 
-    Clock() {
-        this(0,0,0);
-    };
-
-    Clock(int hours, int minutes, int seconds) {
+    // Setters
+    public void setTimer(int hours, int minutes, int seconds) {
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
     }
 
+    public void setCurrentLocalTime(int hours, int minutes, int seconds) {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+    }
+
+    public void setChronometer() {
+        this.hours = 0;
+        this.minutes = 0;
+        this.seconds = 0;
+    }
+
+    // Methods
     public synchronized void chronometer() {
         validateTime();
         while (true) {
@@ -30,8 +40,8 @@ public class Clock {
         }
     }
 
-    public synchronized void sysClock(){
-        while(true){
+    public synchronized void sysClock() {
+        while (true) {
             showTime();
             waitaSecond();
             updateChronometerValues();
