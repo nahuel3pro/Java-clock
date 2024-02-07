@@ -1,6 +1,8 @@
 
 public class Clock {
     private int hours, minutes, seconds;
+    private static final int MAX_TIME_VALUE = 59;
+    private static final int MIN_TIME_VALUE = -1;
 
     // Setters
     public void setTimer(int hours, int minutes, int seconds) {
@@ -33,7 +35,7 @@ public class Clock {
 
     public synchronized void timer() {
         convertExcessTime();
-        while (this.hours != 0 || this.minutes != 0 || this.seconds != -1) {
+        while (hours != 0 || minutes != 0 || seconds != -1) {
             showTime();
             updateTimerValues();
             waitaSecond();
@@ -56,19 +58,19 @@ public class Clock {
     }
 
     private void updateChronometerValues() {
-        this.seconds++;
-        if (this.seconds == 60) {
-            this.minutes++;
-            this.seconds = 0;
+        seconds++;
+        if (seconds == MAX_TIME_VALUE) {
+            minutes++;
+            seconds = 0;
         }
-        if (this.minutes == 60 && this.seconds == 60) {
-            this.hours++;
-            this.minutes = 0;
+        if (minutes == MAX_TIME_VALUE && seconds == MAX_TIME_VALUE) {
+            hours++;
+            minutes = 0;
         }
     }
 
     private void validateTime() {
-        if (this.hours < 0 || this.minutes < 0 && this.seconds <= 0) {
+        if (hours < 0 || minutes < 0 && seconds <= 0) {
             throw new IllegalArgumentException(
                     "Invalid time values. Hours, minutes, and seconds must be within valid ranges.");
         }
@@ -77,35 +79,35 @@ public class Clock {
     private void showTime() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        System.out.printf("%s || %s || %s", this.hours, this.minutes, this.seconds);
+        System.out.printf("%s || %s || %s", hours, minutes, seconds);
     }
 
     private void convertExcessTime() {
-        if (this.seconds >= 60) {
-            this.minutes += this.seconds / 60;
-            this.seconds %= 60;
+        if (seconds >= MAX_TIME_VALUE + 1) {
+            minutes += seconds / MAX_TIME_VALUE + 1;
+            seconds %= MAX_TIME_VALUE + 1;
         }
 
-        if (this.minutes >= 60) {
-            this.hours += this.minutes / 60;
-            this.minutes %= 60;
+        if (minutes >= MAX_TIME_VALUE + 1) {
+            hours += minutes / MAX_TIME_VALUE + 1;
+            minutes %= MAX_TIME_VALUE + 1;
         }
     }
 
     private void updateTimerValues() {
-        this.seconds--;
-        if (this.seconds == -1 && this.minutes != 0) {
-            this.minutes--;
-            this.seconds = 59;
+        seconds--;
+        if (seconds == MIN_TIME_VALUE && minutes != 0) {
+            minutes--;
+            seconds = MAX_TIME_VALUE;
         }
-        if (this.minutes == -1 && this.hours != 0) {
-            this.hours--;
-            this.minutes = 59;
+        if (minutes == MIN_TIME_VALUE && hours != 0) {
+            hours--;
+            minutes = MAX_TIME_VALUE;
         }
-        if (this.seconds == -1 && this.minutes == 0 && this.hours != 0) {
-            this.minutes = 59;
-            this.seconds = 59;
-            this.hours--;
+        if (seconds == MIN_TIME_VALUE && minutes == 0 && hours != 0) {
+            minutes = MAX_TIME_VALUE;
+            seconds = MAX_TIME_VALUE;
+            hours--;
         }
     }
 }
